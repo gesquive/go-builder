@@ -2,7 +2,7 @@ FROM golang:alpine
 LABEL maintainer="Gus Esquivel <gesquive@gmail.com>"
 
 # Install build requirements
-RUN apk update && apk add --no-cache git make bash curl
+RUN apk update && apk add --no-cache gcc musl-dev git make bash curl
 
 ENV bin ${GOPATH}/bin
 

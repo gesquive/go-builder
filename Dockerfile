@@ -7,7 +7,7 @@ RUN apk update && apk add --no-cache gcc musl-dev libc-dev git make bash curl ca
 ENV bin ${GOPATH}/bin
 
 # Create build user.
-RUN adduser -D -g '' builder
+RUN adduser -D -g '' runuser
 
 WORKDIR /app
 

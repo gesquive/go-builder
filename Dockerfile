@@ -1,9 +1,11 @@
 FROM golang:alpine
 LABEL maintainer="Gus Esquivel <gesquive@gmail.com>"
 
-# Install build requirements
-RUN apk update && apk add --no-cache gcc musl-dev libc-dev git make bash curl ca-certificates
+# Install system requirements
+RUN apk update && apk add --no-cache ca-certificates tzdata && update-ca-certificates
 
+# Install build requirements
+RUN apk update && apk add --no-cache gcc musl-dev libc-dev git make bash curl
 ENV bin ${GOPATH}/bin
 
 # Create build user.

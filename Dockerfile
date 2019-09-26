@@ -6,7 +6,7 @@ RUN apk update && apk add --no-cache ca-certificates tzdata && update-ca-certifi
 
 # Install build requirements
 RUN apk update && apk add --no-cache gcc musl-dev libc-dev git make bash curl
-ENV bin ${GOPATH}/bin
+ENV BIN ${GOPATH}/bin
 
 # Create build user.
 RUN adduser -D -g '' runuser

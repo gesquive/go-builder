@@ -2,6 +2,7 @@
 #  Makefile
 #
 
+export SHELL ?= /bin/bash
 include make.cfg
 
 MK_VERSION := $(shell git describe --always --tags --dirty)
@@ -13,11 +14,7 @@ IMAGE_TAG := ${IMAGE_NAME}:${MK_HASH}
 RELEASE_TAG := ${IMAGE_NAME}:${MK_VERSION}
 LATEST_TAG := ${IMAGE_NAME}:latest
 
-INSTALL_PATH := ${GOPATH}/src/${PKG_NAME}
-
 DOCKER ?= docker
-
-export SHELL ?= /bin/bash
 
 default: build
 

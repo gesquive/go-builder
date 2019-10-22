@@ -1,4 +1,5 @@
-FROM golang:alpine
+ARG BASE_IMAGE=golang:alpine
+FROM $BASE_IMAGE
 LABEL maintainer="Gus Esquivel <gesquive@gmail.com>"
 
 # Install system requirements

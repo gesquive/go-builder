@@ -90,4 +90,4 @@ release-buildkit:
 	docker buildx create --driver docker-container --use
 	docker buildx inspect --bootstrap
 	docker buildx ls
-	docker buildx build --platform linux/arm32v6,linux/arm32v7,linux/arm64v8,linux/amd64 --pull -t ${IMAGE}:${DK_VERSION} -t ${IMAGE}:latest push .
+	docker buildx build --platform linux/arm32v6,linux/arm32v7,linux/arm64v8,linux/amd64 --pull -t ${IMAGE}:${DK_VERSION} -t ${IMAGE}:latest --push .

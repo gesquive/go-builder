@@ -1,4 +1,4 @@
-image: docker:stable
+image: docker.io/gesquive/master-builder
 services:
   - name: docker:dind
     entrypoint: ["env", "-u", "DOCKER_HOST"]
@@ -7,22 +7,13 @@ services:
 variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
-  DOCKER_REPO: gesquive
-  IMAGE_NAME: go-builder
-
-cache: &global_cache
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - /var/lib/docker
-    - image
-  policy: pull
 
 stages:
   - build
   - release
 
 before_script:
-  - apk update && apk add --no-cache make git
+  - apt update && apt install -y make git
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
 .build:

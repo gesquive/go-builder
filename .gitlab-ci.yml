@@ -28,18 +28,21 @@ release-amd64:
 
 release-arm32v6:
   stage: build
+  tags: [linux, arm]
   image: arm32v6/docker:stable
   script:
     - make release-docker-arm32v6
 
 release-arm32v7:
   stage: build
+  tags: [linux, arm]
   image: arm32v7/docker:stable
   script:
     - make release-docker-arm32v7
 
 release-arm64v8:
   stage: build
+  tags: [linux, arm]
   image: arm64v8/docker:stable
   script:
     - make release-docker-arm64v8

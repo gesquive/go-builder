@@ -57,16 +57,16 @@ release-version: ## Release a tagged image
 	${DOCKER} tag ${IMAGE_TAG} ${RELEASE_TAG}
 	${DOCKER} push ${RELEASE_TAG}
 
-
 release-docker-%:
-	@echo "building '${DK_TAG}' docker image"
-	${DOCKER} build --pull -t ${IMAGE}:${DK_TAG} .
-	${DOCKER} push ${IMAGE}:${DK_TAG}
+	@echo "building '${DK_VERSION}-${DK_ARCH}' docker image"
+	${DOCKER} build --pull -t ${IMAGE}:${DK_VERSION}-${DK_ARCH} -t ${IMAGE}:latest-${DK_ARCH} .
+	${DOCKER} push ${IMAGE}:${DK_VERSION}-${DK_ARCH}
+	${DOCKER} push ${IMAGE}:latest-${DK_ARCH}
 
-release-docker-amd64: DK_TAG=${DK_VERSION}-amd64
-release-docker-arm32v6: DK_TAG=${DK_VERSION}-arm32v6
-release-docker-arm32v7: DK_TAG=${DK_VERSION}-arm32v7
-release-docker-arm64v8: DK_TAG=${DK_VERSION}-arm64v8
+release-docker-amd64: DK_ARCH=amd64
+release-docker-arm32v6: DK_ARCH=arm32v6
+release-docker-arm32v7: DK_ARCH=arm32v7
+release-docker-arm64v8: DK_ARCH=arm64v8
 
 .PHONY: release-manifest
 release-manifest:  ## build and push all of docker images
@@ -76,9 +76,12 @@ release-manifest:  ## build and push all of docker images
 	${DOCKER} manifest annotate ${IMAGE}:${DK_VERSION} ${IMAGE}:${DK_VERSION}-arm32v7 --os linux --arch arm --variant v7
 	${DOCKER} manifest annotate ${IMAGE}:${DK_VERSION} ${IMAGE}:${DK_VERSION}-arm64v8 --os linux --arch arm64 --variant v8
 	${DOCKER} manifest push ${IMAGE}:${DK_VERSION}
-	# ${DOCKER} pull ${IMAGE}:${DK_VERSION}
-	# ${DOCKER} tag ${IMAGE} latest
-	# ${DOCKER} push latest
+
+	${DOCKER} manifest create ${IMAGE}:latest ${IMAGE}:${DK_VERSION}-amd64 ${IMAGE}:${DK_VERSION}-arm32v6 ${IMAGE}:${DK_VERSION}-arm32v7 ${IMAGE}:${DK_VERSION}-arm64v8
+	${DOCKER} manifest annotate ${IMAGE}:latest ${IMAGE}:${DK_VERSION}-arm32v6 --os linux --arch arm --variant v6
+	${DOCKER} manifest annotate ${IMAGE}:latest ${IMAGE}:${DK_VERSION}-arm32v7 --os linux --arch arm --variant v7
+	${DOCKER} manifest annotate ${IMAGE}:latest ${IMAGE}:${DK_VERSION}-arm64v8 --os linux --arch arm64 --variant v8
+	${DOCKER} manifest push ${IMAGE}:latest
 
 # build manifest for git describe
 # manifest version is "1.2.3-23ab3df"

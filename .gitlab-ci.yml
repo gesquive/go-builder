@@ -1,10 +1,6 @@
-image: docker.io/gesquive/master-builder
+image: docker:stable
 services:
   - name: docker:dind
-
-variables:
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay2
 
 stages:
   - build
@@ -12,13 +8,7 @@ stages:
 
 before_script:
   - apk --update add --no-cache make git
-  # - apt update && apt install -y make git
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-
-.build:
-  stage: build
-  script:
-    - make build
 
 release-amd64:
   stage: build
@@ -28,32 +18,26 @@ release-amd64:
 
 release-arm32v6:
   stage: build
-  tags: [linux, arm]
+  tags: [linux, arm32v6]
   image: arm32v6/docker:stable
   script:
     - make release-docker-arm32v6
 
 release-arm32v7:
   stage: build
-  tags: [linux, arm]
+  tags: [linux, arm32v7]
   image: arm32v7/docker:stable
   script:
     - make release-docker-arm32v7
 
 release-arm64v8:
   stage: build
-  tags: [linux, arm]
+  tags: [linux, arm64v8]
   image: arm64v8/docker:stable
   script:
     - make release-docker-arm64v8
 
-.release-version:
-  stage: release
-  script:
-    - docker info
-    - make release-buildkit
-
-release-manifest:
+release:
   stage: release
   script:
     - docker info

@@ -20,7 +20,7 @@ RUN curl -sL https://git.io/JeOSF | bash
 # Download dependencies
 RUN go get -v golang.org/x/lint/golint
 RUN go get -v github.com/mitchellh/gox
-RUN go get -v github.com/gesquive/gop
+RUN env GO111MODULE=on go get -v github.com/gesquive/gop
 
 RUN get-github-release -e goreleaser -d ${GOPATH}/bin goreleaser/goreleaser
 # RUN get-github-release -e gop -d ${GOPATH}/bin gesquive/gop

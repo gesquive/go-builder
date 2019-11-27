@@ -6,13 +6,16 @@ LABEL maintainer="Gus Esquivel <gesquive@gmail.com>"
 RUN apk update && apk add --no-cache ca-certificates tzdata && update-ca-certificates
 
 # Install build requirements
-RUN apk update && apk add --no-cache gcc musl-dev libc-dev git make bash curl
+RUN apk update && apk add --no-cache gcc musl-dev libc-dev git make bash curl rsync
 ENV BIN ${GOPATH}/bin
 
 # Create build user.
 RUN adduser -D -g '' runuser
 
 WORKDIR /app
+
+# Install the copy-release script 
+COPY copy-release.sh /usr/bin/copy-release
 
 # Install get-github-release
 RUN curl -sL https://git.io/JeOSF | bash

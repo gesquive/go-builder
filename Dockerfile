@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=golang:alpine
+ARG BASE_IMAGE=golang:1.13-alpine
 FROM $BASE_IMAGE
 LABEL maintainer="Gus Esquivel <gesquive@gmail.com>"
 
@@ -6,11 +6,11 @@ LABEL maintainer="Gus Esquivel <gesquive@gmail.com>"
 RUN apk update && apk add --no-cache ca-certificates tzdata && update-ca-certificates
 
 # Install build requirements
-RUN apk update && apk add --no-cache gcc musl-dev libc-dev git make bash curl rsync
+RUN apk update && apk add --no-cache git make bash curl rsync
 ENV BIN ${GOPATH}/bin
 
 # Create build user.
-RUN adduser -D -g '' runuser
+RUN adduser -D -g '' runner
 
 WORKDIR /app
 

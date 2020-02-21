@@ -8,6 +8,7 @@ Includes the following tools:
 
  - [golint](golang.org/x/lint/golint)
  - [get-github-release](https://github.com/gesquive/get-github-release/)
+ - [codecov-bash](https://github.com/codecov/codecov-bash)
  - [gox](github.com/mitchellh/gox)
  - [gop](github.com/gesquive/gop)
  - [goreleaser](github.com/goreleaser/goreleaser)

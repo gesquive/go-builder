@@ -1,11 +1,13 @@
 # go-builder
-[![pipeline status](https://img.shields.io/gitlab/pipeline/gesquive/go-builder?style=flat-square)](https://gitlab.com/gesquive/go-builder/pipelines)
+[![Pipeline Status](https://img.shields.io/circleci/build/github/gesquive/go-builder?style=flat-square)](https://gitlab.com/gesquive/go-builder/pipelines)
+[![Docker Pulls](https://img.shields.io/docker/pulls/gesquive/go-builder?style=flat-square)](https://hub.docker.com/r/gesquive/go-builder)
 
-Golang build docker image
+Docker container to build with the latest golang v1.13.x
 
-Includes the following build tools:
+Includes the following tools:
 
- - [golang.org/x/lint/golint](golang.org/x/lint/golint)
- - [github.com/mitchellh/gox](github.com/mitchellh/gox)
- - [github.com/gesquive/gop](github.com/gesquive/gop)
- - [github.com/goreleaser/goreleaser](github.com/goreleaser/goreleaser)
+ - [golint](golang.org/x/lint/golint)
+ - [get-github-release](https://github.com/gesquive/get-github-release/)
+ - [gox](github.com/mitchellh/gox)
+ - [gop](github.com/gesquive/gop)
+ - [goreleaser](github.com/goreleaser/goreleaser)

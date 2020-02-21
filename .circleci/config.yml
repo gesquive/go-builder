@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  release:
+    docker:
+      - image: gesquive/docker-builder:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN $DOCKER_REGISTRY
+      - run: docker info
+      - run: docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
+      - run: make release-multiarch
+
+
+workflows:
+  version: 2
+  build-workflow:
+    jobs:
+      - release:
+          context: docker-deploy

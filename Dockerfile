@@ -5,6 +5,7 @@ RUN apk update && apk add --no-cache git
 # Build utilities
 RUN go get -v golang.org/x/lint/golint
 RUN go get -v github.com/mitchellh/gox
+RUN env GO111MODULE=on go get -v github.com/boxboat/fixuid && chmod 4755 ${GOPATH}/bin/fixuid
 
 
 FROM golang:1.13-alpine
@@ -36,6 +37,13 @@ RUN curl -sL https://codecov.io/bash -o ${BIN}/codecov-bash && \
 # Import from builder
 COPY --from=builder ${GOPATH}/bin/golint ${BIN}/golint
 COPY --from=builder ${GOPATH}/bin/gox ${BIN}/gox
+COPY --from=builder ${GOPATH}/bin/fixuid ${BIN}/fixuid
 
 RUN get-github-release -e goreleaser -d ${BIN}/bin goreleaser/goreleaser
 RUN get-github-release -e gop -d ${BIN}/bin gesquive/gop
+
+# Configure fixuid
+RUN mkdir -p /etc/fixuid
+COPY fixuid.yml /etc/fixuid/config.yml
+COPY run.sh ${BIN}/run
+

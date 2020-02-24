@@ -1,5 +1,5 @@
 # go-builder
-[![Pipeline Status](https://img.shields.io/circleci/build/github/gesquive/go-builder?style=flat-square)](https://gitlab.com/gesquive/go-builder/pipelines)
+[![Build Status](https://img.shields.io/circleci/build/github/gesquive/go-builder?style=flat-square)](https://circleci.com/gh/gesquive/go-builder)
 [![Docker Pulls](https://img.shields.io/docker/pulls/gesquive/go-builder?style=flat-square)](https://hub.docker.com/r/gesquive/go-builder)
 
 Docker container to build with the latest golang v1.13.x
@@ -12,3 +12,4 @@ Includes the following tools:
  - [gox](github.com/mitchellh/gox)
  - [gop](github.com/gesquive/gop)
  - [goreleaser](github.com/goreleaser/goreleaser)
+ - [fixuid](https://github.com/boxboat/fixuid)

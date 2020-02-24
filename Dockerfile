@@ -1,5 +1,13 @@
-ARG BASE_IMAGE=golang:1.13-alpine
-FROM $BASE_IMAGE
+FROM golang:1.13-alpine AS builder
+
+RUN apk update && apk add --no-cache git
+
+# Build utilities
+RUN go get -v golang.org/x/lint/golint
+RUN go get -v github.com/mitchellh/gox
+
+
+FROM golang:1.13-alpine
 LABEL maintainer="Gus Esquivel <gesquive@gmail.com>"
 
 # Install system requirements
@@ -7,10 +15,11 @@ RUN apk update && apk add --no-cache ca-certificates tzdata && update-ca-certifi
 
 # Install build requirements
 RUN apk update && apk add --no-cache git make bash curl rsync
-ENV BIN ${GOPATH}/bin
+ENV BIN /usr/local/bin
 
-# Create build user.
-RUN adduser -D -g '' runner
+# Create build user/group
+RUN addgroup -g 1000 runner && \
+    adduser -u 1000 -G runner -h /home/runner -s /bin/sh -D runner
 
 WORKDIR /app
 
@@ -21,13 +30,12 @@ COPY copy-release.sh /usr/bin/copy-release
 RUN curl -sL https://git.io/JeOSF | bash
 
 # Install codecov uploader
-RUN curl -sL https://codecov.io/bash -o /usr/bin/codecov-bash && \
-    chmod +x /usr/bin/codecov-bash
+RUN curl -sL https://codecov.io/bash -o ${BIN}/codecov-bash && \
+    chmod +x ${BIN}/codecov-bash
 
-# Download dependencies
-RUN go get -v golang.org/x/lint/golint
-RUN go get -v github.com/mitchellh/gox
-# RUN env GO111MODULE=on go get -v github.com/gesquive/gop
+# Import from builder
+COPY --from=builder ${GOPATH}/bin/golint ${BIN}/golint
+COPY --from=builder ${GOPATH}/bin/gox ${BIN}/gox
 
-RUN get-github-release -e goreleaser -d ${GOPATH}/bin goreleaser/goreleaser
-RUN get-github-release -e gop -d ${GOPATH}/bin gesquive/gop
+RUN get-github-release -e goreleaser -d ${BIN}/bin goreleaser/goreleaser
+RUN get-github-release -e gop -d ${BIN}/bin gesquive/gop

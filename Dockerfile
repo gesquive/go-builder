@@ -7,9 +7,13 @@ RUN go get -v golang.org/x/lint/golint
 RUN go get -v github.com/mitchellh/gox
 RUN env GO111MODULE=on go get -v github.com/boxboat/fixuid && chmod 4755 ${GOPATH}/bin/fixuid
 
-
+# =============================================================================
 FROM golang:1.13-alpine
 LABEL maintainer="Gus Esquivel <gesquive@gmail.com>"
+
+ONBUILD ARG TARGETARCH
+ONBUILD ARG TARGETOS
+ONBUILD ARG TARGETVARIANT
 
 # Install system requirements
 RUN apk update && apk add --no-cache ca-certificates tzdata && update-ca-certificates

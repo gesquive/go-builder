@@ -43,8 +43,8 @@ COPY --from=builder ${GOPATH}/bin/golint ${BIN}/golint
 COPY --from=builder ${GOPATH}/bin/gox ${BIN}/gox
 COPY --from=builder ${GOPATH}/bin/fixuid ${BIN}/fixuid
 
-RUN get-github-release -e goreleaser -d ${BIN}/bin goreleaser/goreleaser
-RUN get-github-release -e gop -d ${BIN}/bin gesquive/gop
+RUN get-github-release -e goreleaser -d ${BIN} goreleaser/goreleaser
+RUN get-github-release -e gop -d ${BIN} gesquive/gop
 
 # Configure fixuid
 RUN mkdir -p /etc/fixuid

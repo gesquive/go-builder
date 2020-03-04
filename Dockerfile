@@ -19,7 +19,7 @@ ONBUILD ARG TARGETVARIANT
 RUN apk update && apk add --no-cache ca-certificates tzdata && update-ca-certificates
 
 # Install build requirements
-RUN apk update && apk add --no-cache git make bash curl rsync
+RUN apk update && apk add --no-cache git openssh-client make bash curl rsync
 ENV BIN /usr/local/bin
 
 # Create build user/group

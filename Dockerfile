@@ -28,11 +28,14 @@ RUN addgroup -g 1000 runner && \
 
 WORKDIR /app
 
-# Install the copy-release script 
+# Install the utility scripts
 COPY copy-release.sh /usr/bin/copy-release
 
 # Install get-github-release
 RUN curl -sL https://git.io/JeOSF | bash
+
+# Install cci-clone
+RUN curl -sL https://git.io/JvVAE | bash
 
 # Install codecov uploader
 RUN curl -sL https://codecov.io/bash -o ${BIN}/codecov-bash && \

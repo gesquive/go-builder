@@ -3,10 +3,25 @@
 #
 
 export SHELL ?= /bin/bash
-include make.cfg
 
+# Project owner used in package name
+OWNER = gesquive
+
+# Project name used in package name
+PROJECT_NAME = go-builder
+
+# Project url used for builds
+# examples: index.docker.io, registry.gitlab.com
+REGISTRY_URL = index.docker.io
+
+# The golang version to use
+GOVERSION ?= 1.13
+
+BASE_IMAGE=${GOVERSION}-alpine
 IMAGE := ${REGISTRY_URL}/${OWNER}/${PROJECT_NAME}
-DK_VERSION = $(shell git describe --always --tags | sed 's/^v//' | sed 's/-g/-/')
+DATE_VERSION = $(shell date "+%Y%m%d")
+HASH_VERSION = $(shell git describe --always | sed 's/^v//' | sed 's/-g/-/')
+DK_VERSION = ${GOVERSION}-${DATE_VERSION}-${HASH_VERSION}
 
 export DOCKER_CLI_EXPERIMENTAL = enabled
 
@@ -24,7 +39,7 @@ help:
 build: ## Build the image
 	@echo "building ${DK_VERSION}"
 	${DOCKER} info
-	${DOCKER} build  --pull -t ${IMAGE}:${DK_VERSION} .
+	${DOCKER} build --build-arg GOVERSION=${GOVERSION} --pull -t ${IMAGE}:${DK_VERSION} .
 
 .PHONY: release
 release: ## Tag and release the image
@@ -38,7 +53,10 @@ release: ## Tag and release the image
 
 # build manifest for git describe
 # manifest version is "1.2.3-23ab3df"
-# image version is "1.2.3-23ab3df-amd64"
+# image version is "1.2.3-23ab3df"
+# "1.14-23ab3df-20200315"
+# "1.14"
+# "latest"
 
 .PHONY: release-multiarch
 release-multiarch:
@@ -47,4 +65,5 @@ release-multiarch:
 	${DOCKER} buildx create --driver docker-container --use build
 	${DOCKER} buildx inspect --bootstrap
 	${DOCKER} buildx ls
-	${DOCKER} buildx build --platform linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64 --pull -t ${IMAGE}:${DK_VERSION} -t ${IMAGE}:latest --push .
+	${DOCKER} buildx build --platform linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64 \
+		--pull -t ${IMAGE}:${DK_VERSION} -t ${IMAGE}:${GOVERSION} -t ${IMAGE}:latest --push .

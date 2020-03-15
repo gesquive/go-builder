@@ -1,4 +1,5 @@
-FROM golang:1.13-alpine AS builder
+ARG GOVERSION=1.13
+FROM golang:$GOVERSION-alpine AS builder
 
 RUN apk update && apk add --no-cache git
 
@@ -8,7 +9,7 @@ RUN go get -v github.com/mitchellh/gox
 RUN env GO111MODULE=on go get -v github.com/boxboat/fixuid && chmod 4755 ${GOPATH}/bin/fixuid
 
 # =============================================================================
-FROM golang:1.13-alpine
+FROM golang:$GOVERSION-alpine
 LABEL maintainer="Gus Esquivel <gesquive@gmail.com>"
 
 ONBUILD ARG TARGETARCH

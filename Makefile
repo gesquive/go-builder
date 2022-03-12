@@ -15,7 +15,7 @@ PROJECT_NAME = go-builder
 REGISTRY_URL = index.docker.io
 
 # The golang version to use
-GOVERSION ?= 1.13
+GOVERSION ?= 1.17
 
 BASE_IMAGE=${GOVERSION}-alpine
 IMAGE := ${REGISTRY_URL}/${OWNER}/${PROJECT_NAME}

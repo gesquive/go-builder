@@ -1,4 +1,4 @@
-ARG GOVERSION=1.13
+ARG GOVERSION=1.17
 FROM golang:$GOVERSION-alpine AS builder
 
 RUN apk update && apk add --no-cache git

@@ -10,7 +10,8 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN $DOCKER_REGISTRY
       - run: docker info
       - run: docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
-      - run: make release-multiarch
+      - run: GOVERSION=1.13 make release-multiarch
+      - run: GOVERSION=1.17 make release-multiarch
 
 
 workflows:

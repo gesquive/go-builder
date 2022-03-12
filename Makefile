@@ -61,9 +61,10 @@ release: ## Tag and release the image
 .PHONY: release-multiarch
 release-multiarch:
 	@echo "building multi-arch docker images ${DK_VERSION}"
-	${DOCKER} context create build
-	${DOCKER} buildx create --driver docker-container --use build
+	${DOCKER} context create build-${GOVERSION}
+	${DOCKER} buildx create --driver docker-container --use build-${GOVERSION}
 	${DOCKER} buildx inspect --bootstrap
 	${DOCKER} buildx ls
-	${DOCKER} buildx build --platform linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64 \
+	${DOCKER} buildx build --build-arg GOVERSION=${GOVERSION} \
+		--platform linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64 \
 		--pull -t ${IMAGE}:${DK_VERSION} -t ${IMAGE}:${GOVERSION} -t ${IMAGE}:latest --push .

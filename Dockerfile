@@ -1,12 +1,12 @@
-ARG GOVERSION=1.17
+ARG GOVERSION=1.18
 FROM golang:$GOVERSION-alpine AS builder
 
 RUN apk update && apk add --no-cache git
 
 # Build utilities
-RUN go get -v golang.org/x/lint/golint
-RUN go get -v github.com/mitchellh/gox
-RUN env GO111MODULE=on go get -v github.com/boxboat/fixuid && chmod 4755 ${GOPATH}/bin/fixuid
+RUN go install golang.org/x/lint/golint@latest
+RUN go install github.com/mitchellh/gox@latest
+RUN go install github.com/boxboat/fixuid@latest && chmod 4755 ${GOPATH}/bin/fixuid
 
 # =============================================================================
 FROM golang:$GOVERSION-alpine

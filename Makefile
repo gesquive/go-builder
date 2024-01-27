@@ -68,3 +68,4 @@ release-multiarch:
 	${DOCKER} buildx build --build-arg GOVERSION=${GOVERSION} \
 		--platform linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64 \
 		--pull -t ${IMAGE}:${DK_VERSION} -t ${IMAGE}:${GOVERSION} -t ${IMAGE}:latest --push .
+	${DOCKER} context rm build-${GOVERSION}

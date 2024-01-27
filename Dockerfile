@@ -7,7 +7,7 @@ RUN apk update && apk add --no-cache git
 RUN go install honnef.co/go/tools/cmd/staticcheck@2023.1.6
 RUN go install github.com/mitchellh/gox@latest
 RUN go install github.com/boxboat/fixuid@v0.6.0 && chmod 4755 ${GOPATH}/bin/fixuid
-
+RUN go install github.com/zyedidia/eget@v1.3.3
 
 # =============================================================================
 FROM golang:$GOVERSION-alpine
@@ -47,6 +47,7 @@ RUN curl -sL https://codecov.io/bash -o ${BIN}/codecov-bash && \
 COPY --from=builder ${GOPATH}/bin/staticcheck ${BIN}/staticcheck
 COPY --from=builder ${GOPATH}/bin/gox ${BIN}/gox
 COPY --from=builder ${GOPATH}/bin/fixuid ${BIN}/fixuid
+COPY --from=builder ${GOPATH}/bin/eget ${BIN}/eget
 
 RUN get-github-release -e goreleaser -d ${BIN} goreleaser/goreleaser
 RUN get-github-release -e gop -d ${BIN} gesquive/gop

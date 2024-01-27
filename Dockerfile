@@ -4,9 +4,10 @@ FROM golang:$GOVERSION-alpine AS builder
 RUN apk update && apk add --no-cache git
 
 # Build utilities
-RUN go install golang.org/x/lint/golint@latest
+RUN go install honnef.co/go/tools/cmd/staticcheck@2023.1.6
 RUN go install github.com/mitchellh/gox@latest
-RUN go install github.com/boxboat/fixuid@latest && chmod 4755 ${GOPATH}/bin/fixuid
+RUN go install github.com/boxboat/fixuid@v0.6.0 && chmod 4755 ${GOPATH}/bin/fixuid
+
 
 # =============================================================================
 FROM golang:$GOVERSION-alpine
@@ -43,7 +44,7 @@ RUN curl -sL https://codecov.io/bash -o ${BIN}/codecov-bash && \
     chmod +x ${BIN}/codecov-bash
 
 # Import from builder
-COPY --from=builder ${GOPATH}/bin/golint ${BIN}/golint
+COPY --from=builder ${GOPATH}/bin/staticcheck ${BIN}/staticcheck
 COPY --from=builder ${GOPATH}/bin/gox ${BIN}/gox
 COPY --from=builder ${GOPATH}/bin/fixuid ${BIN}/fixuid
 

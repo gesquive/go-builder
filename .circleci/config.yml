@@ -3,6 +3,7 @@ jobs:
   release:
     docker:
       - image: gesquive/docker-builder:latest
+    resource_class: large   
     steps:
       - checkout
       - setup_remote_docker:

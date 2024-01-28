@@ -3,11 +3,11 @@ jobs:
   release:
     docker:
       - image: gesquive/docker-builder:latest
-    resource_class: large   
+    resource_class: large
     steps:
       - checkout
       - setup_remote_docker:
-          version: 19.03.13
+          version: default
       - run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN $DOCKER_REGISTRY
       - run: docker info
       - run: docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
